@@ -2,12 +2,20 @@ import argparse
 import json
 
 
-def read_config(path_to_file):
+def read(file_path, fmt):
     """
-        :param path_to_file: path to json config file
-        :return: parsed json data as python dict
+        :param file_path: path to config file
+        :param fmt: format of input file
+        :return: parsed data as python structure
     """
-    with open(path_to_file, "r") as json_file:
+    fmt = fmt.lower()
+    if fmt == 'json':
+        return _read_json(file_path)
+    raise NotImplementedError(f"{fmt} format is not supported yet.")
+
+
+def _read_json(file_path):
+    with open(file_path, "r") as json_file:
         data = json.load(json_file)
         return data
 
@@ -24,7 +32,7 @@ def parse_args():
 
 def main():
     args = parse_args()
-    json_data = read_config(args.cfg_path)
+    json_data = read(args.cfg_path, 'json')
     print(json_data)
 
 
